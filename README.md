@@ -1,16 +1,6 @@
 # Starwars Serverless 
 ## Installation/deployment instructions
-### Using NPM
-
-- Run `npm i` to install the project dependencies
-- Run `npx sls deploy` to deploy this stack to AWS
-
-### Using Yarn
-
-- Run `yarn` to install the project dependencies
-- Run `yarn sls deploy` to deploy this stack to AWS
-
-### Enviroment variables
+### 1. Enviroment variables
 Set up the next variables in a .env file in the root of the project.
 
 .env
@@ -19,7 +9,13 @@ STARWARS_API="https://swapi.py4e.com/api/"
 NODE_ENV="production"
 ```
 
-### Swagger
+### 2. Install dependencies
+- Run `npm i` to install the project dependencies
+
+### 3. Deploy
+- Run `npx sls deploy` to deploy this stack to AWS
+
+### 4. Swagger
 
 To set up the swagger documentation after deployment you must add the output url to the servers array in app.ts.
 
