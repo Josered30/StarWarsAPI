@@ -40,3 +40,5 @@ openapiJson.servers = [
   { url: 'https://qf3vdjyf3a.execute-api.us-east-1.amazonaws.com/prod' },
 ];
 ```
+
+Navigate to `${url}/prod/docs/swagger.html to see the documentation.
