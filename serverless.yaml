@@ -11,7 +11,6 @@ provider:
   name: aws
   iam:
     role: !GetAtt StarWarsLambdaRole.Arn
-
   runtime: "nodejs16.x"
   stage: prod
   apiGateway:
@@ -123,7 +122,7 @@ resources:
               Action:
                 - sts:AssumeRole
         Policies:
-          - PolicyName: DynamoPolicy
+          - PolicyName: LogPolicy
             PolicyDocument:
               Version: "2012-10-17"
               Statement:
@@ -138,6 +137,11 @@ resources:
                       - "arn:aws:logs:${Region}:${AccountId}:log-group:/aws/lambda/*:*:*"
                       - Region: !Ref AWS::Region
                         AccountId: !Ref "AWS::AccountId"
+
+          - PolicyName: DynamoPolicy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
                 - Sid: ListAndDescribe
                   Effect: Allow
                   Action:
@@ -160,6 +164,5 @@ resources:
                     - dynamodb:Delete*
                     - dynamodb:Update*
                     - dynamodb:PutItem
-                  Resource: '*'
-                  
-                  
+                  Resource: "*"
+                   
