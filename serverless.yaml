@@ -164,5 +164,4 @@ resources:
                     - dynamodb:Delete*
                     - dynamodb:Update*
                     - dynamodb:PutItem
-                  Resource: "*"
-                   
+                  Resource: "arn:aws:dynamodb:*:*:table/StarWarsPeople/**"
