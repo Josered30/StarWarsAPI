@@ -14,6 +14,20 @@
 
 To set up the swagger documentation after deployment you must add the output url to the servers array in app.ts.
 
+"sls deploy" console output
+```sh
+Deploying starwars-api to stage prod (us-east-1)
+
+✔ Service deployed to stack starwars-api-prod (70s)
+
+endpoints:
+  ANY - https://qf3vdjyf3a.execute-api.us-east-1.amazonaws.com/prod/
+  ANY - https://qf3vdjyf3a.execute-api.us-east-1.amazonaws.com/prod/{proxy+}
+functions:
+  app: starwars-api-prod-app (5.4 MB)
+
+```
+
 app.ts
 ```typescript
 openapiJson.servers = [
