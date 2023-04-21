@@ -1,0 +1,373 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "StarWars API",
+    "description": "StarWars API integration.",
+    "contact": {
+      "email": "josered30@hotmail.com"
+    },
+    "version": "0.1.0"
+  },
+  "externalDocs": {
+    "description": "GitHub Repository",
+    "url": "https://github.com/connorads/lockbot"
+  },
+  "paths": {
+    "/api/people/{id}": {
+      "get": {
+        "tags": ["People"],
+        "summary": "Get people from StarWars API or DynamoDb",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Get person response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPersonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/people": {
+      "post": {
+        "tags": ["People"],
+        "summary": "Create person in DynamoDb",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePersonRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Person created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatePersonResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreatePersonRequest": {
+        "type": "object",
+        "properties": {
+          "nombre": {
+            "type": "string"
+          },
+          "nacimiento": {
+            "type": "string"
+          },
+          "colorOjos": {
+            "type": "string"
+          },
+          "genero": {
+            "type": "string"
+          },
+          "colorCabello": {
+            "type": "string"
+          },
+          "altura": {
+            "type": "string"
+          },
+          "masa": {
+            "type": "string"
+          },
+          "colorPiel": {
+            "type": "string"
+          },
+          "mundoOrigen": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "fechaCreacion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaEdicion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "species": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "starships": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vehicles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "films": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "nombre",
+          "nacimiento",
+          "colorOjos",
+          "genero",
+          "colorCabello",
+          "altura",
+          "masa",
+          "colorPiel",
+          "mundoOrigen",
+          "url"
+        ]
+      },
+      "GetPersonResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "nacimiento": {
+            "type": "string"
+          },
+          "colorOjos": {
+            "type": "string"
+          },
+          "genero": {
+            "type": "string"
+          },
+          "colorCabello": {
+            "type": "string"
+          },
+          "altura": {
+            "type": "string"
+          },
+          "masa": {
+            "type": "string"
+          },
+          "colorPiel": {
+            "type": "string"
+          },
+          "mundoOrigen": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "fechaCreacion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaEdicion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "species": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "starships": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vehicles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "films": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "nombre",
+          "nacimiento",
+          "colorOjos",
+          "genero",
+          "colorCabello",
+          "altura",
+          "masa",
+          "colorPiel",
+          "mundoOrigen",
+          "url",
+          "fechaCreacion",
+          "fechaEdicion",
+          "species",
+          "starships",
+          "vehicles",
+          "films"
+        ]
+      },
+      "CreatePersonResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "uuid": {
+            "type": "string"
+          },
+          "nombre": {
+            "type": "string"
+          },
+          "nacimiento": {
+            "type": "string"
+          },
+          "colorOjos": {
+            "type": "string"
+          },
+          "genero": {
+            "type": "string"
+          },
+          "colorCabello": {
+            "type": "string"
+          },
+          "altura": {
+            "type": "string"
+          },
+          "masa": {
+            "type": "string"
+          },
+          "colorPiel": {
+            "type": "string"
+          },
+          "mundoOrigen": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "fechaCreacion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "fechaEdicion": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "species": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "starships": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "vehicles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "films": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "uuid",
+          "nombre",
+          "nacimiento",
+          "colorOjos",
+          "genero",
+          "colorCabello",
+          "altura",
+          "masa",
+          "colorPiel",
+          "mundoOrigen",
+          "url",
+          "fechaCreacion",
+          "fechaEdicion",
+          "species",
+          "starships",
+          "vehicles",
+          "films"
+        ]
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "example": { "message": "Insert specific error message here" }
+      }
+    }
+  }
+}

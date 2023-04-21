@@ -1,0 +1,166 @@
+service: starwars-api
+frameworkVersion: "3"
+
+plugins:
+  - serverless-esbuild
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-dynamodb-local
+
+provider:
+  name: aws
+  iam:
+    role: !GetAtt StarWarsLambdaRole.Arn
+
+  runtime: "nodejs16.x"
+  stage: prod
+  apiGateway:
+    minimumCompressionSize: 1024
+    shouldStartNameWithService: true
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    NODE_OPTIONS: "--enable-source-maps --stack-trace-limit=1000"
+
+functions:
+  app:
+    handler: "./src/index.handler"
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{proxy+}
+          method: ANY
+
+package: { individually: true }
+
+custom:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    external:
+      - swagger-ui-express
+    exclude:
+      - aws-sdk
+    target: node16
+    define:
+      require.resolve: undefined
+    platform: node
+    concurrency: 10
+    loader:
+      .html: text
+
+  dynamodb:
+    # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    # Uncomment only if you already have a DynamoDB running locally
+    # noStart: true
+
+resources:
+  Resources:
+    StarWarsPeopleTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: StarWarsPeople
+        AttributeDefinitions:
+          - AttributeName: Uuid
+            AttributeType: S
+          - AttributeName: Id
+            AttributeType: S
+          - AttributeName: CreatedAt
+            AttributeType: N
+          - AttributeName: UpdatedAt
+            AttributeType: N
+        KeySchema:
+          - AttributeName: Uuid
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+          - IndexName: IdIndex
+            KeySchema:
+              - AttributeName: Id
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+          - IndexName: CreatedAtIndex
+            KeySchema:
+              - AttributeName: Id
+                KeyType: HASH
+              - AttributeName: CreatedAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+          - IndexName: UpdatedAtIndex
+            KeySchema:
+              - AttributeName: Id
+                KeyType: HASH
+              - AttributeName: UpdatedAt
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        BillingMode: PAY_PER_REQUEST
+
+    StarWarsLambdaRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service:
+                  - lambda.amazonaws.com
+                  - dynamodb.amazonaws.com
+              Action:
+                - sts:AssumeRole
+        Policies:
+          - PolicyName: DynamoPolicy
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Sid: Logs
+                  Effect: "Allow"
+                  Action:
+                    - "logs:CreateLogGroup"
+                    - "logs:CreateLogStream"
+                    - "logs:PutLogEvents"
+                  Resource:
+                    Fn::Sub:
+                      - "arn:aws:logs:${Region}:${AccountId}:log-group:/aws/lambda/*:*:*"
+                      - Region: !Ref AWS::Region
+                        AccountId: !Ref "AWS::AccountId"
+                - Sid: ListAndDescribe
+                  Effect: Allow
+                  Action:
+                    - dynamodb:List*
+                    - dynamodb:DescribeReservedCapacity*
+                    - dynamodb:DescribeLimits
+                    - dynamodb:DescribeTimeToLive
+                  Resource: "*"
+                - Sid: SpecificTable
+                  Effect: Allow
+                  Action:
+                    - dynamodb:BatchGet*
+                    - dynamodb:DescribeStream
+                    - dynamodb:DescribeTable
+                    - dynamodb:Get*
+                    - dynamodb:Query
+                    - dynamodb:Scan
+                    - dynamodb:BatchWrite*
+                    - dynamodb:CreateTable
+                    - dynamodb:Delete*
+                    - dynamodb:Update*
+                    - dynamodb:PutItem
+                  Resource:
+                    Fn::Sub:
+                      - "${TableArn}/**"
+                      - TableArn: !GetAtt StarWarsPeopleTable.Arn
