@@ -11,7 +11,7 @@
 - Run `yarn sls deploy` to deploy this stack to AWS
 
 ### Enviroment variables
-Set up the next variables in a .env file in the root of the proyect.
+Set up the next variables in a .env file in the root of the project.
 
 .env
 ```
