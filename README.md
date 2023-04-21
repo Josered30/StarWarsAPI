@@ -10,6 +10,14 @@
 - Run `yarn` to install the project dependencies
 - Run `yarn sls deploy` to deploy this stack to AWS
 
+### Enviroment variables
+Set up the next variables in a .env file in the root of the proyect.
+.env
+```
+STARWARS_API="https://swapi.py4e.com/api/"
+NODE_ENV="production"
+```
+
 ### Swagger
 
 To set up the swagger documentation after deployment you must add the output url to the servers array in app.ts.
