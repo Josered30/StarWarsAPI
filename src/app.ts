@@ -23,10 +23,7 @@ app.use('/api/people', peopleRoutes);
 // app.use('/static', express.static(swaggerUi.absolutePath()));
 
 const openapiJson: any = Object.assign({}, openapi);
-openapiJson.servers = [
-  { url: 'http://localhost:3000/dev' },
-  { url: 'https://qf3vdjyf3a.execute-api.us-east-1.amazonaws.com/prod' },
-];
+openapiJson.servers = [{ url: 'http://localhost:3000/dev' }];
 
 app.use('/docs', swaggerUiExpress.serveWithOptions({ redirect: false }), swaggerUiExpress.setup(openapiJson));
 
