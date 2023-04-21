@@ -160,7 +160,6 @@ resources:
                     - dynamodb:Delete*
                     - dynamodb:Update*
                     - dynamodb:PutItem
-                  Resource:
-                    Fn::Sub:
-                      - "${TableArn}/**"
-                      - TableArn: !GetAtt StarWarsPeopleTable.Arn
+                  Resource: '*'
+                  
+                  
