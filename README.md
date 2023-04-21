@@ -12,6 +12,7 @@
 
 ### Enviroment variables
 Set up the next variables in a .env file in the root of the proyect.
+
 .env
 ```
 STARWARS_API="https://swapi.py4e.com/api/"
