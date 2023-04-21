@@ -14,8 +14,6 @@ export async function getPerson(req: Request, res: Response) {
   const personId = isNum ? Number.parseInt(req.params.id) : null;
   const personUuid = isNum ? null : req.params.id;
 
-  console.log(personId, personUuid);
-
   try {
     const getPeopleOutput = await getPersonInteractor.handle({ personId, personUuid });
     res.json(getPeopleOutput).status(200);
@@ -25,7 +23,6 @@ export async function getPerson(req: Request, res: Response) {
 }
 
 export async function postPerson(req: Request, res: Response) {
-  console.log('post');
   const createPersonInteractor = container.resolve(CreatePersonInteractor);
 
   try {
