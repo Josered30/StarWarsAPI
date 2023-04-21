@@ -25,7 +25,7 @@ export class PeopleRepository implements PeopleIRepository {
       ScanIndexForward: false,
     });
 
-    const queryCommandOutput = await this.dynamoService.client.send(queryCommand);
+    const queryCommandOutput = await this.dynamoService.sendQueryCommand(queryCommand);
 
     if (!queryCommandOutput.Items || queryCommandOutput.Items.length === 0) {
       return null;
@@ -68,9 +68,7 @@ export class PeopleRepository implements PeopleIRepository {
       ScanIndexForward: false,
     });
 
-    const queryCommandOutput = await this.dynamoService.client.send(queryCommand);
-
-    console.log(queryCommandOutput.Items);
+    const queryCommandOutput = await this.dynamoService.sendQueryCommand(queryCommand);
 
     if (!queryCommandOutput.Items || queryCommandOutput.Items.length === 0) {
       return null;
@@ -101,8 +99,6 @@ export class PeopleRepository implements PeopleIRepository {
   }
 
   async savePeople(person: Person): Promise<void> {
-    console.log(person.id.toString());
-
     const putItemsCommand = new PutItemCommand({
       TableName: 'StarWarsPeople',
       Item: {
@@ -163,6 +159,6 @@ export class PeopleRepository implements PeopleIRepository {
       },
     });
 
-    await this.dynamoService.client.send(putItemsCommand);
+    await this.dynamoService.sendPutItemCommand(putItemsCommand);
   }
 }

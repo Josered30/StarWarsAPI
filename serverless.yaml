@@ -13,7 +13,7 @@ provider:
     role: !GetAtt StarWarsLambdaRole.Arn
 
   runtime: "nodejs16.x"
-  stage: prod
+  stage: dev
   apiGateway:
     minimumCompressionSize: 1024
     shouldStartNameWithService: true

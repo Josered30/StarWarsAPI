@@ -1,10 +1,10 @@
-import { DynamoDBClient, DynamoDBClientConfig } from '@aws-sdk/client-dynamodb';
+import { DynamoDBClient, DynamoDBClientConfig, PutItemCommand, QueryCommand } from '@aws-sdk/client-dynamodb';
 import { Lifecycle, injectable, scoped } from 'tsyringe';
 
 @scoped(Lifecycle.ResolutionScoped)
 @injectable()
 export class DynamoService {
-  public readonly client: DynamoDBClient;
+  private readonly client: DynamoDBClient;
 
   constructor() {
     let config: DynamoDBClientConfig = {};
@@ -15,5 +15,13 @@ export class DynamoService {
       };
     }
     this.client = new DynamoDBClient(config);
+  }
+
+  sendQueryCommand(queryCommand: QueryCommand) {
+    return this.client.send(queryCommand);
+  }
+
+  sendPutItemCommand(putItemCommand: PutItemCommand) {
+    return this.client.send(putItemCommand);
   }
 }

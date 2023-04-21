@@ -54,10 +54,14 @@ export class GetPersonInteractor {
     }
 
     if (getPeopleInput.personId === null) {
-      throw new GetPeopleError('PersonId is null');
+      throw new GetPersonError('PersonId is null');
     }
 
     const getPeopleResponse = await this.starWarsService.getPerson(getPeopleInput.personId);
+    if (getPeopleResponse === null) {
+      throw new GetPersonError('Person not found');
+    }
+
     const newPerson: Person = {
       id: getPeopleInput.personId || 0,
       uuid: uuid(),
@@ -78,8 +82,6 @@ export class GetPersonInteractor {
       vehiculos: getPeopleResponse.vehicles || [],
       peliculas: getPeopleResponse.films || [],
     };
-
-    console.log(newPerson);
 
     await this.peopleRepository.savePeople(newPerson);
 

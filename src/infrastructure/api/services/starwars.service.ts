@@ -7,7 +7,12 @@ import { inject, injectable } from 'tsyringe';
 export class StarWarsService {
   constructor(@inject(HttpClientService) private readonly httpClientService: HttpClientService) {}
 
-  getPerson(personId: number) {
-    return this.httpClientService.client.get<GetPeopleResponse>(`people/${personId}`).then((response) => response.data);
+  async getPerson(personId: number): Promise<GetPeopleResponse | null> {
+    try {
+      const response = await this.httpClientService.client.get<GetPeopleResponse>(`people/${personId}`);
+      return response.data;
+    } catch (error) {
+      return null;
+    }
   }
 }
