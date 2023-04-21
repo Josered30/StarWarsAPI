@@ -41,4 +41,4 @@ openapiJson.servers = [
 ];
 ```
 
-Navigate to `https://<lambda_address>/prod/docs/swagger.html` to see the documentation.
+Navigate to `https://<lambda_address>/docs/swagger.html` to see the documentation.
